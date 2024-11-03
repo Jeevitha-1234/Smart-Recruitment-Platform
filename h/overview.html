@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recruitment Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .header, .metrics, .charts, .applications {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input, select, button {
+            padding: 8px;
+            margin-top: 5px;
+            width: calc(100% - 16px); /* Adjust for padding */
+        }
+        .metrics .metric {
+            display: inline-block;
+            width: 23%;
+            margin-right: 1%;
+            text-align: center;
+        }
+        .charts {
+            display: flex;
+            justify-content: space-between;
+        }
+        .chart {
+            width: 32%;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Recruitment Dashboard</h1>
+    <label for="dateRange">Date Range</label>
+    <input type="text" id="dateRange" placeholder="Select date range" required>
+    <button id="refreshBtn">Refresh</button>
+</div>
+
+<div class="metrics">
+    <div class="metric">
+        <h3>Total Applications</h3>
+        <p id="totalApplications">150</p>
+    </div>
+    <div class="metric">
+        <h3>Applications in Progress</h3>
+        <p id="applicationsInProgress">30</p>
+    </div>
+    <div class="metric">
+        <h3>Hired Candidates</h3>
+        <p id="hiredCandidates">50</p>
+    </div>
+    <div class="metric">
+        <h3>Rejected Candidates</h3>
+        <p id="rejectedCandidates">70</p>
+    </div>
+</div>
+
+<div class="charts">
+    <div class="chart">
+        <h3>Applications Over Time</h3>
+        <canvas id="applicationsOverTimeChart"></canvas>
+    </div>
+    <div class="chart">
+        <h3>Applications by Source</h3>
+        <canvas id="applicationsBySourceChart"></canvas>
+    </div>
+    <div class="chart">
+        <h3>Applications by Status</h3>
+        <canvas id="applicationsByStatusChart"></canvas>
+    </div>
+</div>
+
+<div class="applications">
+    <h3>Applications Table</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Applicant Name</th>
+                <th>Position</th>
+                <th>Source</th>
+                <th>Date Applied</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="applicationsTableBody">
+            <tr>
+                <td>Jane Doe</td>
+                <td>Software Engineer</td>
+                <td>LinkedIn</td>
+                <td>2024-09-10</td>
+                <td>In Progress</td>
+                <td><button class="viewDetailsBtn" onclick="location.href='Report dashboard.html'">View Details</button></td>
+                    
+            </tr>
+            <tr>
+                <td>John Smith</td>
+                <td>Data Analyst</td>
+                <td>Referral</td>
+                <td>2024-09-12</td>
+                <td>Hired</td>
+                <td><button class="viewDetailsBtn" onclick="location.href='Report dashboard.html'">View Details</button></td>
+            </tr>
+            <!-- More rows can be added here -->
+        </tbody>
+    </table>
+</div>
+
+<script>
+    document.getElementById('refreshBtn').addEventListener('click', function() {
+        const dateRange = document.getElementById('dateRange').value;
+        // Logic to refresh dashboard data based on the selected date range
+        alert(`Refreshing data for the date range: ${dateRange}`);
+        // This would typically involve making a request to fetch new data
+    });
+
+    document.querySelectorAll('.viewDetailsBtn').forEach(button => {
+        button.addEventListener('click', function() {
+            // Logic to open the Application Details screen
+            alert('Opening Application Details screen...');
+        });
+    });
+</script>
+
+</body>
+</html>

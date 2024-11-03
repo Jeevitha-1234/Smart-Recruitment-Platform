@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .section {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        label {
+            font-weight: bold;
+        }
+        button {
+            padding: 10px 15px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Edit Report</h1>
+
+<div class="section">
+    <h2>Report Information</h2>
+    <label for="reportName">Report Name</label>
+    <input type="text" id="reportName" placeholder="Enter report name" value="Sample Report" required>
+</div>
+
+<div class="section">
+    <h2>Filters</h2>
+    
+    <label for="dateRange">Date Range</label>
+    <input type="text" id="dateRange" placeholder="Select date range" value="2024-01-01 to 2024-01-31" required>
+
+    <label for="status">Application Status</label>
+    <select id="status">
+        <option value="">Select status</option>
+        <option value="New">New</option>
+        <option value="In Progress">In Progress</option>
+        <option value="Hired" selected>Hired</option>
+        <option value="Rejected">Rejected</option>
+    </select>
+
+    <label for="position">Position</label>
+    <select id="position">
+        <option value="">Select position</option>
+        <option value="Developer">Developer</option>
+        <option value="Designer" selected>Designer</option>
+    </select>
+
+    <label for="source">Source</label>
+    <select id="source">
+        <option value="">Select source</option>
+        <option value="Job Board">Job Board</option>
+        <option value="Referral">Referral</option>
+    </select>
+</div>
+
+<div class="section">
+    <h2>Fields to Include</h2>
+    <label>Fields to Include</label>
+    <div>
+        <input type="checkbox" id="includeName" checked>
+        <label for="includeName">Applicant Name</label>
+    </div>
+    <div>
+        <input type="checkbox" id="includeDateApplied" checked>
+        <label for="includeDateApplied">Date Applied</label>
+    </div>
+    <div>
+        <input type="checkbox" id="includeStatus" checked>
+        <label for="includeStatus">Status</label>
+    </div>
+    <div>
+        <input type="checkbox" id="includeSource">
+        <label for="includeSource">Source</label>
+    </div>
+</div>
+
+<div class="section">
+    <button id="generateReportBtn">Generate Report</button>
+</div>
+
+<script>
+    document.getElementById('generateReportBtn').addEventListener('click', function() {
+        // Logic to save changes and regenerate the report
+        alert('Changes saved and report regenerated!');
+    });
+</script>
+
+</body>
+</html>

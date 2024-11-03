@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .section {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        label {
+            font-weight: bold;
+        }
+        input, select, textarea, button {
+            width: calc(100% - 16px);
+            padding: 8px;
+            margin-top: 5px;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 15px;
+        }
+        .checkbox-group {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Create Report</h1>
+
+<div class="section">
+    <label for="reportName">Report Name</label>
+    <input type="text" id="reportName" placeholder="Enter report name" required>
+</div>
+
+<div class="section">
+    <label for="dateRange">Date Range</label>
+    <input type="text" id="dateRange" placeholder="Select date range" required>
+</div>
+
+<div class="section">
+    <label for="status">Application Status</label>
+    <select id="status">
+        <option value="" disabled selected>Select status</option>
+        <option value="New">New</option>
+        <option value="In Progress">In Progress</option>
+        <option value="Hired">Hired</option>
+        <option value="Rejected">Rejected</option>
+        <!-- More statuses can be added here -->
+    </select>
+</div>
+
+<div class="section">
+    <label for="position">Position</label>
+    <select id="position">
+        <option value="" disabled selected>Select position</option>
+        <option value="Developer">Developer</option>
+        <option value="Designer">Designer</option>
+        <option value="Manager">Manager</option>
+        <!-- More positions can be added here -->
+    </select>
+</div>
+
+<div class="section">
+    <label for="source">Source</label>
+    <select id="source">
+        <option value="" disabled selected>Select source</option>
+        <option value="Job Board">Job Board</option>
+        <option value="Referral">Referral</option>
+        <!-- More sources can be added here -->
+    </select>
+</div>
+
+<div class="section">
+    <label>Fields to Include</label>
+    <div class="checkbox-group">
+        <label><input type="checkbox" value="Applicant Name"> Applicant Name</label><br>
+        <label><input type="checkbox" value="Date Applied"> Date Applied</label><br>
+        <label><input type="checkbox" value="Status"> Status</label><br>
+        <label><input type="checkbox" value="Source"> Source</label><br>
+        <!-- More fields can be added here -->
+    </div>
+</div>
+
+<button id="generateReportBtn">Generate Report</button>
+
+<script>
+    document.getElementById('generateReportBtn').addEventListener('click', function() {
+        const reportName = document.getElementById('reportName').value;
+        const dateRange = document.getElementById('dateRange').value;
+        const status = document.getElementById('status').value;
+        const position = document.getElementById('position').value;
+        const source = document.getElementById('source').value;
+
+        const fields = Array.from(document.querySelectorAll('.checkbox-group input:checked'))
+            .map(checkbox => checkbox.value);
+
+        if (reportName && dateRange && fields.length > 0) {
+            // Logic to generate the report based on selected criteria
+            alert(`Generating report: ${reportName}\nDate Range: ${dateRange}\nStatus: ${status}\nPosition: ${position}\nSource: ${source}\nFields: ${fields.join(', ')}`);
+        } else {
+            alert('Please fill out all required fields and select at least one field to include.');
+        }
+    });
+</script>
+
+</body>
+</html>

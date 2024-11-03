@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recruitment Assist Application</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            color: #333;
+        }
+
+        form div {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"], input[type="date"], textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #formMessage {
+            margin-top: 20px;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Job Creation and Publishing</h1>
+
+        <!-- Job Creation Screen -->
+        <section id="jobCreation">
+            <h2>Job Creation</h2>
+            <form id="jobCreationForm">
+                <div>
+                    <label for="jobTitle">Job Title</label>
+                    <input type="text" id="jobTitle" placeholder="Enter the job title" required>
+                </div>
+                <div>
+                    <label for="jobDescription">Job Description</label>
+                    <textarea id="jobDescription" placeholder="Enter the job description" required minlength="50"></textarea>
+                </div>
+                <div>
+                    <label for="department">Department</label>
+                    <select id="department" required>
+                        <option value="">Select a department</option>
+                        <option value="HR">HR</option>
+                        <option value="IT">IT</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="Sales">Sales</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="jobLocation">Job Location</label>
+                    <input type="text" id="jobLocation" placeholder="Enter the job location" required>
+                </div>
+                <div>
+                    <label for="employmentType">Employment Type</label>
+                    <select id="employmentType" required>
+                        <option value="">Select employment type</option>
+                        <option value="Full-time">Full-time</option>
+                        <option value="Part-time">Part-time</option>
+                        <option value="Contract">Contract</option>
+                        <option value="Internship">Internship</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="salaryRange">Salary Range</label>
+                    <input type="text" id="salaryRange" placeholder="Enter the salary range" required pattern="\d+">
+                </div>
+                <div>
+                    <label for="applicationDeadline">Application Deadline</label>
+                    <input type="date" id="applicationDeadline" required>
+                </div>
+                <div>
+                    <label for="requiredQualifications">Required Qualifications</label>
+                    <textarea id="requiredQualifications" placeholder="Enter the required qualifications" required></textarea>
+                </div>
+                <div>
+                    <label for="preferredQualifications">Preferred Qualifications</label>
+                    <textarea id="preferredQualifications" placeholder="Enter the preferred qualifications"></textarea>
+                </div>
+                <div>
+                    <label for="responsibilities">Responsibilities</label>
+                    <textarea id="responsibilities" placeholder="Enter the job responsibilities" required></textarea>
+                </div>
+                <button type="button" id="saveDraftBtn">Save as Draft</button>
+                <button type="submit" id="publishBtn">Publish</button>
+            </form>
+            <div id="formMessage"></div>
+        </section>
+
+        <!-- Job Drafts Screen -->
+        <section id="jobDrafts" class="hidden">
+            <h2>Job Drafts</h2>
+            <table id="draftsTable">
+                <thead>
+                    <tr>
+                        <th>Job Title</th>
+                        <th>Department</th>
+                        <th>Date Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Draft job entries will go here -->
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Published Jobs Screen -->
+        <section id="publishedJobs" class="hidden">
+            <h2>Published Jobs</h2>
+            <table id="publishedTable">
+                <thead>
+                    <tr>
+                        <th>Job Title</th>
+                        <th>Department</th>
+                        <th>Date Published</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Published job entries will go here -->
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Job Categories Management Screen -->
+        <section id="jobCategories" class="hidden">
+            <h2>Job Categories Management</h2>
+            <form id="categoryForm">
+                <div>
+                    <label for="categoryType">Category Type</label>
+                    <select id="categoryType" required>
+                        <option value="">Select category type</option>
+                        <option value="Department">Department</option>
+                        <option value="Location">Location</option>
+                        <option value="Employment Type">Employment Type</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="categoryName">Category Name</label>
+                    <input type="text" id="categoryName" placeholder="Enter the category name" required>
+                </div>
+                <button type="button" id="addCategoryBtn">Add Category</button>
+            </form>
+            <table id="categoriesTable">
+                <thead>
+                    <tr>
+                        <th>Category Type</th>
+                        <th>Category Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Categories will go here -->
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <script>
+        // JavaScript code to handle form submission and actions
+        document.getElementById('jobCreationForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const jobTitle = document.getElementById('jobTitle').value;
+            const jobDescription = document.getElementById('jobDescription').value;
+            const department = document.getElementById('department').value;
+            const jobLocation = document.getElementById('jobLocation').value;
+            const employmentType = document.getElementById('employmentType').value;
+            const salaryRange = document.getElementById('salaryRange').value;
+            const applicationDeadline = document.getElementById('applicationDeadline').value;
+            const requiredQualifications = document.getElementById('requiredQualifications').value;
+            const responsibilities = document.getElementById('responsibilities').value;
+
+            if (jobTitle && jobDescription.length >= 50 && department && jobLocation && employmentType && salaryRange && applicationDeadline && requiredQualifications && responsibilities) {
+                const publishedTable = document.getElementById('publishedTable').querySelector('tbody');
+                const newRow = document.createElement('tr');
+                newRow.innerHTML = `<td>${jobTitle}</td><td>${department}</td><td>${new Date().toLocaleDateString()}</td><td><button class="viewBtn">View</button><button class="editBtn">Edit</button><button class="unpublishBtn">Unpublish</button></td>`;
+                publishedTable.appendChild(newRow);
+                document.getElementById('formMessage').innerText = 'Job published successfully!';
+                document.getElementById('jobCreationForm').reset();
+            } else {
+                document.getElementById('formMessage').innerText = 'Please fill all required fields correctly.';
+            }
+        });
+
+        // Save Draft functionality
+        document.getElementById('saveDraftBtn').addEventListener('click', function () {
+            const jobTitle = document.getElementById('jobTitle').value;
+            const department = document.getElementById('department').value;
+
+            if (jobTitle && department) {
+                const draftsTable = document.getElementById('draftsTable').querySelector('tbody');
+                const newRow = document.createElement('tr');
+                newRow.innerHTML = `<td>${jobTitle}</td><td>${department}</td><td>${new Date().toLocaleDateString()}</td><td><button class="editDraftBtn">Edit</button><button class="deleteDraftBtn">Delete</button></td>`;
+                draftsTable.appendChild(newRow);
+                document.getElementById('formMessage').innerText = 'Job saved as draft successfully!';
+                document.getElementById('jobCreationForm').reset();
+            } else {
+                document.getElementById('formMessage').innerText = 'Please fill job title and department to save as draft.';
+            }
+        });
+
+        // Handling Category Management
+        document.getElementById('addCategoryBtn').addEventListener('click', function () {
+            const categoryType = document.getElementById('categoryType').value;
+            const categoryName = document.getElementById('categoryName').value;
+
+            if (categoryType && categoryName) {
+                const categoriesTable = document.getElementById('categoriesTable').querySelector('tbody');
+                const newRow = document.createElement('tr');
+                newRow.innerHTML = `<td>${categoryType}</td><td>${categoryName}</td><td><button class="editCategoryBtn">Edit</button><button class="deleteCategoryBtn">Delete</button></td>`;
+                categoriesTable.appendChild(newRow);
+                document.getElementById('categoryForm').reset();
+            }
+        });
+
+        // Note: Additional functionality for edit and delete buttons can be added as needed
+    </script>
+</body>
+</html>

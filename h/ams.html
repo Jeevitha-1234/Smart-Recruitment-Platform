@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Tracking System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, h3 {
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"], input[type="date"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Application Tracking System</h1>
+
+        <!-- Applications Management Screen -->
+        <section id="applicationsManagementScreen">
+            <h2>Applications Management</h2>
+            <div>
+                <label for="jobTitleFilter">Job Title</label>
+                <select id="jobTitleFilter">
+                    <option>Select job title</option>
+                    <option>Software Engineer</option>
+                    <option>Product Manager</option>
+                    <option>UX Designer</option>
+                </select>
+
+                <label for="statusFilter">Status</label>
+                <select id="statusFilter">
+                    <option>Select status</option>
+                    <option>Applied</option>
+                    <option>In Review</option>
+                    <option>Interview</option>
+                    <option>Offered</option>
+                    <option>Rejected</option>
+                </select>
+
+                <label for="dateRangeFilter">Date Applied</label>
+                <input type="date" id="dateRangeFilter" placeholder="Select date range">
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Applicant Name</th>
+                        <th>Job Title</th>
+                        <th>Status</th>
+                        <th>Date Applied</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="applicationsTable">
+                    <tr>
+                        <td>John Doe</td>
+                        <td>Software Engineer</td>
+                        <td>In Review</td>
+                        <td>2024-10-01</td>
+                        <td>
+                            <button onclick="viewApplication(0)">View</button>
+                            <button onclick="moveToNextStage(0)">Move to Next Stage</button>
+                            <button onclick="rejectApplication(0)">Reject</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Application Details Screen -->
+        <section id="applicationDetailsScreen" class="hidden">
+            <h2>Application Details</h2>
+            <h3>Applicant Information</h3>
+            <p><strong>Name:</strong> <span id="applicantName"></span></p>
+            <p><strong>Email:</strong> <span id="applicantEmail">applicant@example.com</span></p>
+            <p><strong>Phone:</strong> <span id="applicantPhone">123-456-7890</span></p>
+            <p><strong>Resume:</strong> <a href="#" download>Download</a></p>
+            
+            <h3>Job Information</h3>
+            <p><strong>Job Title:</strong> <span id="jobTitle"></span></p>
+            <p><strong>Department:</strong> Engineering</p>
+            <p><strong>Location:</strong> Remote</p>
+
+            <h3>Application Status</h3>
+            <p><strong>Current Status:</strong> <span id="currentStatus"></span></p>
+            <label>Change Status</label>
+            <select id="changeStatus">
+                <option>Applied</option>
+                <option>In Review</option>
+                <option>Interview</option>
+                <option>Offered</option>
+                <option>Rejected</option>
+            </select>
+            <button onclick="saveStatus()">Save Status</button>
+
+            <h3>Notes</h3>
+            <textarea id="notes" placeholder="Add notes about the application"></textarea>
+            <button onclick="saveNotes()">Save Notes</button>
+            <button onclick="goBack()">Back</button>
+        </section>
+
+        <!-- Notifications Screen -->
+        <section id="notificationsScreen" class="hidden">
+            <h2>Notifications</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Notification Message</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="notificationsList"></tbody>
+            </table>
+        </section>
+    </div>
+
+    <script>
+        const notifications = [];
+        const applications = [
+            {
+                name: "John Doe",
+                jobTitle: "Software Engineer",
+                status: "In Review",
+                dateApplied: "2024-10-01",
+                email: "john@example.com",
+                phone: "123-456-7890"
+            }
+        ];
+
+        function viewApplication(index) {
+            const application = applications[index];
+            document.getElementById('applicantName').innerText = application.name;
+            document.getElementById('jobTitle').innerText = application.jobTitle;
+            document.getElementById('currentStatus').innerText = application.status;
+            document.getElementById('applicationsManagementScreen').classList.add('hidden');
+            document.getElementById('applicationDetailsScreen').classList.remove('hidden');
+        }
+
+        function moveToNextStage(index) {
+            applications[index].status = "Interview";
+            addNotification(`Application for ${applications[index].name} moved to next stage.`);
+            alert("Moved to Next Stage");
+            showNotifications();
+        }
+
+        function rejectApplication(index) {
+            applications[index].status = "Rejected";
+            addNotification(`Application for ${applications[index].name} has been rejected.`);
+            alert("Application Rejected");
+            showNotifications();
+        }
+
+        function saveStatus() {
+            const newStatus = document.getElementById('changeStatus').value;
+            document.getElementById('currentStatus').innerText = newStatus;
+            addNotification("Status updated to " + newStatus);
+            alert("Status Updated");
+        }
+
+        function saveNotes() {
+            const notes = document.getElementById('notes').value;
+            addNotification("Notes saved: " + notes);
+            alert("Notes Saved");
+        }
+
+        function goBack() {
+            document.getElementById('applicationDetailsScreen').classList.add('hidden');
+            document.getElementById('applicationsManagementScreen').classList.remove('hidden');
+        }
+
+        function addNotification(message) {
+            notifications.push({
+                message,
+                date: new Date().toLocaleDateString()
+            });
+            showNotifications();
+        }
+
+        function showNotifications() {
+            document.getElementById('applicationsManagementScreen').classList.add('hidden');
+            document.getElementById('notificationsScreen').classList.remove('hidden');
+            const notificationsList = document.getElementById('notificationsList');
+            notificationsList.innerHTML = '';
+            notifications.forEach((notification, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${notification.message}</td>
+                    <td>${notification.date}</td>
+                    <td>
+                        <button onclick="markAsRead(${index})">Mark as Read</button>
+                        <button onclick="deleteNotification(${index})">Delete</button>
+                    </td>
+                `;
+                notificationsList.appendChild(row);
+            });
+        }
+
+        function markAsRead(index) {
+            const notificationRow = document.getElementById('notificationsList').children[index];
+            notificationRow.children[0].style.textDecoration = "line-through";
+        }
+
+        function deleteNotification(index) {
+            notifications.splice(index, 1);
+            showNotifications();
+        }
+    </script>
+</body>
+</html>

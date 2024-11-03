@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interview Scheduling Dashboard</title>
+  <style>
+    /* Global Styles */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f9;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      width: 80%;
+      margin: 0 auto;
+    }
+    h1 {
+      color: #333;
+    }
+
+    /* Table Styles */
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    .table th, .table td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+    .table th {
+      background-color: #0073e6;
+      color: #fff;
+    }
+
+    /* Button Styles */
+    .button {
+      padding: 10px 20px;
+      background-color: #0073e6;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 10px 0;
+    }
+    .button:hover {
+      background-color: #005bb5;
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 400px;
+      padding: 20px;
+      background-color: #fff;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+      border-radius: 8px;
+    }
+    .modal.active {
+      display: block;
+    }
+    .modal .close-button {
+      float: right;
+      font-size: 20px;
+      cursor: pointer;
+      color: #333;
+    }
+
+    /* Form Styles */
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      font-weight: bold;
+    }
+    input[type="text"], input[type="date"], input[type="time"], select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Interview Scheduling Dashboard</h1>
+
+    <!-- Upcoming Interviews Summary -->
+    <p>Upcoming Interviews: <span id="upcoming-count">0</span></p>
+
+    <!-- Schedule New Interview Button -->
+    <button class="button" onclick="openModal('schedule-modal')">Schedule New Interview</button>
+
+    <!-- Interviews List Table -->
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Applicant Name</th>
+          <th>Job Title</th>
+          <th>Interview Date</th>
+          <th>Interview Time</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="interviews-list">
+        <!-- Interview rows will be dynamically added here -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Schedule Interview Modal -->
+  <div class="modal" id="schedule-modal">
+    <span class="close-button" onclick="closeModal('schedule-modal')">&times;</span>
+    <h2>Schedule Interview</h2>
+    <div class="form-group">
+      <label for="applicant-name">Applicant Name</label>
+      <select id="applicant-name">
+        <option value="">Select applicant</option>
+        <option value="John Doe">John Doe</option>
+        <option value="Jane Smith">Jane Smith</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="job-title">Job Title</label>
+      <select id="job-title">
+        <option value="">Select job title</option>
+        <option value="Software Engineer">Software Engineer</option>
+        <option value="Data Analyst">Data Analyst</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="interview-date">Interview Date</label>
+      <input type="date" id="interview-date">
+    </div>
+    <div class="form-group">
+      <label for="interview-time">Interview Time</label>
+      <input type="time" id="interview-time">
+    </div>
+    <div class="form-group">
+      <label for="interview-mode">Interview Mode</label>
+      <select id="interview-mode" onchange="toggleLocationField()">
+        <option value="">Select interview mode</option>
+        <option value="In-Person">In-Person</option>
+        <option value="Video Call">Video Call</option>
+        <option value="Phone Call">Phone Call</option>
+        <option value="Teams Call">Teams Call</option>
+      </select>
+    </div>
+    <div class="form-group" id="interview-location-group" style="display: none;">
+      <label for="interview-location">Interview Location</label>
+      <input type="text" id="interview-location" placeholder="Enter interview location">
+    </div>
+    <button class="button" onclick="scheduleInterview()">Schedule Interview</button>
+  </div>
+
+  <!-- JavaScript for Modal and Scheduling Logic -->
+  <script>
+    function openModal(id) {
+      document.getElementById(id).classList.add('active');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+
+    function toggleLocationField() {
+      const mode = document.getElementById('interview-mode').value;
+      const locationGroup = document.getElementById('interview-location-group');
+      locationGroup.style.display = mode === 'In-Person' ? 'block' : 'none';
+    }
+
+    function scheduleInterview() {
+      const name = document.getElementById('applicant-name').value;
+      const job = document.getElementById('job-title').value;
+      const date = document.getElementById('interview-date').value;
+      const time = document.getElementById('interview-time').value;
+      const mode = document.getElementById('interview-mode').value;
+      const location = document.getElementById('interview-location').value;
+
+      if (name && job && date && time && mode && (mode !== 'In-Person' || location)) {
+        const table = document.getElementById('interviews-list');
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${name}</td>
+          <td>${job}</td>
+          <td>${date}</td>
+          <td>${time}</td>
+          <td>Scheduled</td>
+          <td>
+            <button class="button" onclick="viewDetails('${name}', '${job}', '${date}', '${time}', '${mode}', '${location}')">View</button>
+            <button class="button" onclick="rescheduleInterview(this)">Reschedule</button>
+            <button class="button" onclick="cancelInterview(this)">Cancel</button>
+          </td>
+        `;
+        table.appendChild(row);
+        closeModal('schedule-modal');
+        updateUpcomingCount();
+      } else {
+        alert('Please fill all required fields.');
+      }
+    }
+
+    function viewDetails(name, job, date, time, mode, location) {
+      alert(`Applicant Name: ${name}\nJob Title: ${job}\nInterview Date: ${date}\nInterview Time: ${time}\nInterview Mode: ${mode}\nInterview Location: ${location}`);
+    }
+
+    function rescheduleInterview(button) {
+      const row = button.parentElement.parentElement;
+      const date = prompt('Enter new interview date:', row.cells[2].textContent);
+      const time = prompt('Enter new interview time:', row.cells[3].textContent);
+      if (date && time) {
+        row.cells[2].textContent = date;
+        row.cells[3].textContent = time;
+        alert('Interview rescheduled successfully.');
+      }
+    }
+
+    function cancelInterview(button) {
+      if (confirm('Are you sure you want to cancel this interview?')) {
+        button.parentElement.parentElement.remove();
+        updateUpcomingCount();
+      }
+    }
+
+    function updateUpcomingCount() {
+      const count = document.getElementById('interviews-list').rows.length;
+      document.getElementById('upcoming-count').textContent = count;
+    }
+    function cancelInterview(button) {
+      if (confirm('Are you sure you want to cancel this interview?')) {
+        button.parentElement.parentElement.remove();
+        updateUpcomingCount();
+        alert('Interview canceled successfully.');
+      } else {
+        alert('Interview not canceled.');
+      }
+    }
+  </script>
+</body>
+</html>
